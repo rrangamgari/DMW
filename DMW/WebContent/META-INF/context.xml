@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="DMW" debug="1" path="/DMW" distributable="true">
+        <ResourceLink name="jdbc/mppc" global="jdbc/mppc" type="javax.sql.DataSource"/>
+        <!-- <Manager className="org.apache.catalina.ha.session.DeltaManager"
+             expireSessionsOnShutdown="false"
+             notifyListenersOnReplication="true" />  -->
+        <!-- <Resource auth="Container" connectionProperties="SetBigStringTryClob=true" driverClassName="oracle.jdbc.driver.OracleDriver" logAbandoned="true" maxActive="50" maxIdle="05" maxWait="-1" name="jdbc/mppc" password="i2-web-1" removeAbandoned="true" removeAbandonedTimeout="60" type="javax.sql.DataSource" url="jdbc:oracle:thin:@i2hq-db-d3.dalsemi.com:1521:apstst" username="i2web"/> -->
+      </Context>
+ 		

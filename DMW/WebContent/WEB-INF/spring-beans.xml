@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+	<bean id="DMWAuditSpringDao" class="com.mxim.dmw.dao.DMWAuditSpringDao">
+		<property name="dataSource" ref="i2webDS" />
+		<property name="SQLMap" ref="AuditSQLMap" />
+	</bean>
+	<bean id="DMWAdminSpringDao" class="com.mxim.dmw.dao.DMWAdminSpringDao">
+		<property name="dataSource" ref="i2webDS" />
+		<property name="SQLMap" ref="SQLMap" />
+		<property name="auditDao" ref="DMWAuditSpringDao" />
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="i2webDS" />
+	</bean>
+	<bean id="SQLMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="DMW_ROLES_QUERY">
+					<value><![CDATA[
+					SELECT ROLE_NAME as NAME,DMW_ROLE_ID as ID    FROM I2WEBDATA.DMW_ROLES   ORDER BY DMW_ROLE_ID 
+					]]></value>
+				</entry>
+				<entry key="DMW_ALL_OWNERS_QUERY">
+					<value><![CDATA[
+					SELECT OWNER AS NAME, RANK () OVER (ORDER BY owner) AS ID  FROM (SELECT DISTINCT OWNER    FROM ALL_TAB_COLUMNS ORDER BY OWNER)
+					]]></value>
+				</entry>
+				<entry key="DMW_ALL_TABLES_QUERY">
+					<value><![CDATA[
+					SELECT TABLE_NAME as NAME, RANK () OVER (ORDER BY TABLE_NAME) AS ID  FROM (SELECT DISTINCT TABLE_NAME    FROM ALL_TAB_COLUMNS   WHERE  owner = ':OWNER'   )
+					]]></value>
+				</entry>
+				<entry key="DMW_TABLES_SEQ_QUERY">
+					<value><![CDATA[
+					SELECT I2WEBDATA.DMW_TABLE_INFO_SEQ.NEXTVAL FROM DUAL
+					]]></value>
+				</entry>
+				<entry key="DMW_TABLES_ROLES_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_ROLES     VALUES (?, ?)
+					]]></value>
+				</entry>
+				<entry key="DMW_TABLES_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_INFO (DMW_TABLE_INFO_ID,
+			                                     DMW_TABLE_CONF_ID,
+			                                     TABLE_OWNER,
+			                                     TABLE_ALIAS,                                      TABLE_NAME,
+			                                     SCHEMA_NAME,
+			                                      CONDITIONAL_QUERY,
+			                                     PIVOT,                                      PAGINATION,
+			                                                                           DMW_ROLE)
+			     				VALUES (':DMW_TABLE_INFO_ID',             ':DMW_TABLE_CONF_ID',             ':TABLE_OWNER',
+			             				':TABLE_ALIAS',             ':TABLE_NAME',             ':SCHEMA_NAME',
+			             				':CONDITIONAL_QUERY',             ':PIVOT',             ':PAGINATION',
+			                      		':DMW_ROLE')
+					]]></value>
+				</entry>
+				<entry key="DMW_TABLE_ACCESS_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_ACCESS (DMW_TABLE_INFO_ID,ADD_ROW,
+			                              DELETE_ROW,                              MASS_UPDATE,
+			                              UPLOAD,                              DOWNLOAD,
+			                              DMW_ROLE_ID,                              EDITABLE)
+			    				VALUES (?,  ?,             ?,             ?,				?,             ?,             ?,             ?)
+					]]></value>
+				</entry>
+				<entry key="DMW_ALL_COLUMNS_QUERY">
+					<value><![CDATA[
+					SELECT  COLUMN_NAME  as NAME ,COLUMN_ID as ID  FROM ALL_TAB_COLUMNS   WHERE  OWNER = ':OWNER'   AND TABLE_NAME = ':TABLE_NAME' ORDER BY COLUMN_NAME
+					]]></value>
+				</entry>
+				<entry key="DMW_TABLES_QUERY_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_CONDITIONAL_QUERY(DMW_TABLE_INFO_ID,QUERY) VALUES (?,?)
+					]]></value>
+				</entry>
+
+				<entry key="DMW_TABLES_PAGING_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_PAGING(DMW_TABLE_INFO_ID,PAGE_LENGTH,SORT_BY,SORT_DIR) VALUES (?,?,?,?)
+					]]></value>
+				</entry>
+
+				<entry key="DMW_TABLES_PIVOT_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_PIVOT(DMW_TABLE_INFO_ID,FIXED_FIELDS,PIVOT_COLUMNS,PIVOT_DATA) VALUES (?,?,?,?)
+					]]></value>
+				</entry>
+
+				<entry key="DMW_TABLE_EDITABLE_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_EDITABLE(DMW_TABLE_INFO_ID,COLUMN_NAME,ALLOW_EDITABLE,DMW_ROLE_ID) VALUES (?,?,?,?)
+					]]></value>
+				</entry>
+
+				<entry key="DMW_TABLES_AUTO_INSERT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_TABLE_AUTO(DMW_TABLE_INFO_ID,COLUMN_NAME,AUTO_FIELD) VALUES (?,?,?)
+					]]></value>
+				</entry>
+
+
+			</map>
+		</property>
+	</bean>
+
+	<bean id="AuditSQLMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="DMW_AUDIT_QUERY">
+					<value><![CDATA[
+					INSERT INTO I2WEBDATA.DMW_AUDIT_TRAIL (EVENT_NAME,
+				                                       EVENT_DESCRIPTION,
+				                                       EVENT_QUERY,
+				                                       UPDATED_BY,
+				                                      UPDATED_DATE)     VALUES (?, ?,?,?, SYSDATE) 
+					]]></value>
+				</entry>
+
+			</map>
+
+		</property>
+	</bean>
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL">
+		   <!-- <value>failover:(tcp://mxddscmweb04l:61616,tcp://mxddscmweb03l:61616)?initialReconnectDelay=100&amp;trackMessages=true&amp;backup=true&amp;maxCacheSize=261072</value> -->    
+		    <value>failover:(tcp://mxdpscmweb04l:61616,tcp://mxdpscmweb03l:61616)?initialReconnectDelay=100&amp;trackMessages=true&amp;backup=true&amp;maxCacheSize=261072</value>  
+			  <!-- <value>failover:(tcp://mxddscmweb04l:61616)</value> -->  
+			<!-- <value>failover:(tcp://localhost:61616,tcp://localhost:61626)</value> -->
+		</property>
+	</bean>
+	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="DMW_DATA_AUDIT" />
+	</bean>
+	<bean id="genDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="DMW_GEN_AUDIT" />
+	</bean>
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="destination" />
+	</bean>
+	<bean id="jmsGenTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="genDestination" />
+	</bean>
+	<bean id="messageSender" class="com.mxim.dmw.util.MessageSender">
+		<property name="jmsTemplate" ref="jmsTemplate" />
+	</bean>
+	<bean id="genMessageSender" class="com.mxim.dmw.util.MessageSender">
+		<property name="jmsTemplate" ref="jmsGenTemplate" />
+	</bean>
+</beans>

@@ -1,0 +1,11 @@
+delete from DMW_TABLE_AUTO;
+delete from DMW_CONDITIONAL_QUERY;
+delete from DMW_USER_ROLES;
+delete from DMW_TABLE_ROLES;
+delete from DMW_AUDIT_TRAIL;
+delete from DMW_TABLE_PAGING;
+delete from DMW_TABLE_PIVOT;
+delete from DMW_TABLE_EDITABLE;
+delete from DMW_TABLE_ACCESS;
+delete from DMW_TABLE_INFO;
+delete from DMW_TABLE_CONF;

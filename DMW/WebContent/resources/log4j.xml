@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--===============================================-->
+<!--	Logger configuration					   -->
+<!--===============================================-->
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+<!--========== APPENDERS ==========-->
+
+<!--	DEBUG LEVEL APPENDER	-->
+	<appender name="FA_DEBUG" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Debug.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	INFO LEVEL APPENDER		-->
+	<appender name="FA_INFO" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Info.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	WARN LEVEL APPENDER		-->
+	<appender name="FA_WARN" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Warn.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	ERROR LEVEL APPENDER	-->
+	<appender name="FA_ERROR" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Error.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	FATAL LEVEL APPENDER	-->
+	<appender name="FA_FATAL" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Fatal.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	GLOBAL APPENDER			-->
+	<appender name="FA_GLOBAL" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/avf/Global.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	STANDARD OUTPUT (CONSOLE) APPENDER	-->
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--========== LOGGERS ==========-->
+
+<!--	DEBUG LEVEL LOGGER	-->
+	<logger name="DebugLogger">
+		<appender-ref ref="FA_DEBUG" />
+	</logger> 
+
+<!--	INFO LEVEL LOGGER	
+	<logger name="InfoLogger">
+		<appender-ref ref="FA_INFO" />
+	</logger> -->
+
+<!--	WARN LEVEL LOGGER	
+	<logger name="WarnLogger">
+		<appender-ref ref="FA_WARN" />
+	</logger> -->
+
+<!--	ERROR LEVEL LOGGER	-->
+	<logger name="ErrorLogger">
+		<appender-ref ref="FA_ERROR" />
+	</logger>
+
+<!--	FATAL LEVEL LOGGER	-->
+	<logger name="FatalLogger">
+		<appender-ref ref="FA_FATAL" />
+	</logger> 
+
+
+<!--	GLOBAL LEVEL LOGGER	-->
+	<root>
+	   <!-- <level value="error" /> -->
+   	   <level value="debug" />
+   	   <appender-ref ref="STDOUT" />
+   	   <appender-ref ref="FA_GLOBAL" />
+   	</root>
+
+</log4j:configuration>

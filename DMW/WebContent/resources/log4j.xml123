@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--===============================================-->
+<!--	Logger configuration					   -->
+<!--===============================================-->
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+<!--========== APPENDERS ==========-->
+
+<!--	DEBUG LEVEL APPENDER	-->
+	<appender name="FA_DEBUG" class="org.apache.log4j.FileAppender">
+		<param name="File" value="../applogs/DMW/Debug.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	INFO LEVEL APPENDER		-->
+	<appender name="FA_INFO" class="org.apache.log4j.FileAppender">
+		<param name="File" value="../applogs/DMW/Info.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	WARN LEVEL APPENDER		-->
+	<appender name="FA_WARN" class="org.apache.log4j.FileAppender">
+		<param name="File" value="../applogs/DMW/Warn.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	ERROR LEVEL APPENDER	-->
+	<appender name="FA_ERROR" class="org.apache.log4j.FileAppender">
+		<param name="File" value="../applogs/DMW/Error.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	FATAL LEVEL APPENDER	-->
+	<appender name="FA_FATAL" class="org.apache.log4j.FileAppender">
+		<param name="File" value="../applogs/DMW/Fatal.log" />
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %t %m%n"/>
+		</layout>
+	</appender>
+
+<!--	GLOBAL APPENDER			-->
+	<appender name="FA_GLOBAL" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="../applogs/DMW/DMW.log" />
+		<param name="MaxFileSize" value="2MB"/>
+		<param name="Append" value="true" />
+		<param name="BufferedIO" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c{1}] %m (%t)%n"/>
+		</layout>
+	</appender>
+
+<!--	STANDARD OUTPUT (CONSOLE) APPENDER	-->
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c{1}] %m (%t)%n"/>
+		</layout>
+	</appender>
+
+<!--========== LOGGERS ==========-->
+
+<!--	DEBUG LEVEL LOGGER-->	
+	<logger name="DebugLogger">
+		<appender-ref ref="FA_DEBUG" />
+	</logger> 
+
+<!--	INFO LEVEL LOGGER	-->
+	<logger name="InfoLogger">
+		<appender-ref ref="FA_INFO" />
+	</logger> 
+
+<!--	WARN LEVEL LOGGER-->	
+	<logger name="WarnLogger">
+		<appender-ref ref="FA_WARN" />
+	</logger> 
+
+<!--	ERROR LEVEL LOGGER-->	
+	<logger name="ErrorLogger">
+		<appender-ref ref="FA_ERROR" />
+	</logger>
+
+<!--	FATAL LEVEL LOGGER-->	
+	<logger name="FatalLogger">
+		<appender-ref ref="FA_FATAL" />
+	</logger> 
+
+<!--	GLOBAL LEVEL LOGGER	-->
+	<root>
+	   <!-- <level value="error" /> -->
+   	   <level value="WARN" />
+   	   <appender-ref ref="STDOUT" />
+   	   <appender-ref ref="FA_GLOBAL" />
+   	</root>
+   	
+   	
+	<logger name="org.springframework">
+		<level value="WARN"/> 
+	</logger>
+	
+	
+	<logger name="com.maxim">
+		<level value="debug"/> 
+	</logger>
+	<logger name="com.mx">
+		<level value="debug"/> 
+	</logger>
+	
+	<!-- <logger name="com.softwarementors.extjs.djn">
+		<level value="WARN"/> 
+	</logger> -->
+	<logger name="org.springframework">
+		<level value="INFO"/> 
+	</logger>
+</log4j:configuration>

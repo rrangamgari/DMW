@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- the application context definition for the springapp DispatcherServlet -->
+
+	<import resource="classpath*:com/maxim/dao/basic-dao-beans.xml"/>
+	<import resource="classpath*:com/maxim/utils/service/user/user-service-beans.xml"/>
+	<import resource="classpath*:com/maxim/utils/service/eventlog/event-log-beans.xml"/>
+	
+	<context:component-scan base-package="com.mxim.dmw.api" />
+	<context:annotation-config />
+	<mvc:annotation-driven />
+
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+  		<property name="corePoolSize" value="1" />
+  		<property name="maxPoolSize" value="3" />
+  		<property name="queueCapacity" value="100" />
+	</bean>
+	
+	<bean id="i2webDS" class="org.springframework.jndi.JndiObjectFactoryBean" >
+		<property name="jndiName" value="java:comp/env/jdbc/mppc" />
+		<property name="resourceRef" value="true" />
+	</bean>
+	
+	<bean id="SQLMap" class="org.springframework.beans.factory.config.MapFactoryBean" >
+		<property name="sourceMap">
+			<map>
+				 	   	
+			<entry key="dummy"><value><![CDATA[
+			]]></value></entry>   	   	
+			</map>
+		</property>
+	</bean>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="50000000"/>
+</bean>
+</beans>
